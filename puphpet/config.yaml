@@ -54,8 +54,8 @@ vagrantfile:
                         - .vagrant/
                         - .git/
                     auto: 'true'
-                owner: www-data
-                group: www-data
+                owner: vagrant
+                group: vagrant
         usable_port_range:
             start: 10200
             stop: 10500
@@ -98,7 +98,13 @@ locale:
         timezone: Europe/Vienna
 firewall:
     install: '1'
-    rules: {  }
+    rules:
+        fr_symfony:
+            port:
+                - '8000'
+            priority: '100'
+            proto: tcp
+            action: accept
 cron:
     install: '1'
     jobs: {  }
@@ -114,14 +120,10 @@ nginx:
         names_hash_bucket_size: 128
     upstreams: {  }
     vhosts:
-        nxv_y1bz1a7we63k:
+        nxv_symfony:
             server_name: symfony.dev
-            www_root: /var/www/barcamp/symfony
+            www_root: /var/www/barcamp/symfony/web
             listen_port: '80'
-            index_files:
-                - index.html
-                - index.htm
-                - index.php
             client_max_body_size: 500m
             ssl: '0'
             ssl_cert: ''
@@ -132,35 +134,40 @@ nginx:
             rewrite_to_https: '1'
             spdy: '1'
             locations:
-                nxvl_6sgvd4q3eyc7:
+                nxvl_symfony:
                     location: /
                     autoindex: 'off'
                     internal: 'false'
                     try_files:
                         - $uri
-                        - $uri/
-                        - /index.php$is_args$args
+                        - /app.php$is_args$args
                     fastcgi: ''
                     fastcgi_index: ''
                     fastcgi_split_path: ''
                     proxy: ''
                     proxy_redirect: ''
-                nxvl_kxry9nlbz5b4:
-                    location: '~ \.php$'
+                nxvl_symfony_dev:
+                    location: '~ ^/(app_dev|config)\.php(/|$)'
                     autoindex: 'off'
                     internal: 'false'
-                    try_files:
-                        - $uri
-                        - $uri/
-                        - /index.php$is_args$args
                     fastcgi: '127.0.0.1:9000'
-                    fastcgi_index: index.php
+                    fastcgi_index: ''
                     fastcgi_split_path: '^(.+\.php)(/.*)$'
                     fast_cgi_params_extra:
-                        - 'SCRIPT_FILENAME $request_filename'
-                        - 'APP_ENV dev'
-                    set:
-                        - '$path_info $fastcgi_path_info'
+                        - 'SCRIPT_FILENAME $realpath_root$fastcgi_script_name'
+                        - 'DOCUMENT_ROOT $realpath_root'
+                    proxy: ''
+                    proxy_redirect: ''
+                nxvl_symfony_prod:
+                    location: '~ ^/app\.php(/|$)'
+                    autoindex: 'off'
+                    internal: 'true'
+                    fastcgi: '127.0.0.1:9000'
+                    fastcgi_index: ''
+                    fastcgi_split_path: '^(.+\.php)(/.*)$'
+                    fast_cgi_params_extra:
+                        - 'SCRIPT_FILENAME $realpath_root$fastcgi_script_name'
+                        - 'DOCUMENT_ROOT $realpath_root'
                     proxy: ''
                     proxy_redirect: ''
     proxies: {  }
@@ -168,8 +175,8 @@ apache:
     install: '0'
     settings:
         version: 2.4
-        user: www-data
-        group: www-data
+        user: vagrant
+        group: vagrant
         default_vhost: true
         manage_user: false
         manage_group: false
@@ -241,8 +248,8 @@ php:
                 prefix: www
                 listen: '127.0.0.1:9000'
                 security.limit_extensions: .php
-                user: www-user
-                group: www-data
+                user: vagrant
+                group: vagrant
     composer: '1'
     composer_home: ''
 xdebug:
