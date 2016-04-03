@@ -3,8 +3,8 @@ vagrantfile:
     vm:
         provider:
             local:
-                box: puphpet/ubuntu1404-x64
-                box_url: puphpet/ubuntu1404-x64
+                box: pixelart/barcamp-sbg-2016
+                box_url: pixelart/barcamp-sbg-2016
                 box_version: '0'
                 chosen_virtualizer: virtualbox
                 virtualizers:

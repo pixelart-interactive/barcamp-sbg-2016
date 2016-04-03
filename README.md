@@ -10,9 +10,9 @@ You need to have following installed:
 - [Vagrant]
 - [VirtualBox]
 
-The minimum recommended version of vagrant at the time of writing is 1.8.1
+The minimum required version of vagrant at the time of writing is 1.8.1
 
-With these versions you can use only Virtualbox 5.x
+The minimum required version of Virtualbox is a 5.x one.
 
 You will also need to have hardware virtualization option activated in bios, if
 you have one.
@@ -21,7 +21,7 @@ you have one.
 
 The local development is meant to be used in a vagrant provisioned box.
 
-The provisioner for the project is Puppet.
+The provisioner for the project is Puppet, but you get an already provisioned box.
 
 Once you have the prerequisites setup, clone the repo, and from the cloned repo
 directory run the
@@ -34,24 +34,11 @@ from you terminal to start the process up.
 If you do not see an error message, go get yourself a cup of coffee or your
 favorite beverage, you deserve it.
 
-If you start seeing the connection timeout after adding of the private key
-```
-    default: SSH username: vagrant
-    default: SSH auth method: private key
-    default: Warning: Connection timeout. Retrying...
-    default: Warning: Connection timeout. Retrying...
-```
-You should open up the Virtualbox, click the vm running (name should be along
-the lines of barcamp-sbg-2016....) and reset it (on OSX it is cmd+t). This is
-due to some weird bug somewhere on intersection of vagrant, virtualbox and this
-ubuntu cloud image. After the initial virtual machine build, you will not need
-to use this.
-
 If you experience error along the lines of
 ```
-==> default: Adding box '{{ boxname }}' ({{ boxversion}}) for provider: virtualbox
-    default: Downloading: https://atlas.hashicorp.com/{{ boxurl }}.box
-==> default: Box download is resuming from prior download progress
+==> barcamp-sbg-2016: Adding box 'pixelart/barcamp-sbg-2016' (v1.0.0) for provider: virtualbox
+    barcamp-sbg-2016: Downloading: https://atlas.hashicorp.com/pixelart/boxes/barcamp-sbg-2016/versions/1.0.0/providers/virtualbox.box
+==> barcamp-sbg-2016: Box download is resuming from prior download progress
 An error occurred while downloading the remote file. The error
 message, if any, is reproduced below. Please fix this error and try
 again.
@@ -71,8 +58,6 @@ If for any reason you need to reprovision the vm, you will need to run
 ```
 vagrant provision
 ```
-
-Be careful with this one, as it takes a LOT of time on slow connection.
 
 ***IMPORTANT***
 
