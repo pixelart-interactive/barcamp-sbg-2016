@@ -1,10 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Job list</h1>
+    {% for category in categories %}
+        <h1>{{ category.name }}</h1>
 
-    <table>
-        <thead>
+        <table>
+            <thead>
             <tr>
                 <th>Id</th>
                 <th>Type</th>
@@ -21,26 +22,27 @@
                 <th>Createdat</th>
                 <th>Updatedat</th>
             </tr>
-        </thead>
-        <tbody>
-        {% for job in jobs %}
-            <tr>
-                <td>{{ job.id }}</td>
-                <td>{{ job.type }}</td>
-                <td>{{ job.company }}</td>
-                <td>{{ job.logo }}</td>
-                <td>{{ job.url }}</td>
-                <td>{{ job.position }}</td>
-                <td>{{ job.location }}</td>
-                <td>{{ job.description }}</td>
-                <td>{{ job.howToApply }}</td>
-                <td>{{ job.token }}</td>
-                <td>{{ job.email }}</td>
-                <td>{% if job.expiresAt %}{{ job.expiresAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if job.createdAt %}{{ job.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if job.updatedAt %}{{ job.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for job in category.activeJobs %}
+                <tr>
+                    <td>{{ job.id }}</td>
+                    <td>{{ job.type }}</td>
+                    <td>{{ job.company }}</td>
+                    <td>{{ job.logo }}</td>
+                    <td>{{ job.url }}</td>
+                    <td>{{ job.position }}</td>
+                    <td>{{ job.location }}</td>
+                    <td>{{ job.description }}</td>
+                    <td>{{ job.howToApply }}</td>
+                    <td>{{ job.token }}</td>
+                    <td>{{ job.email }}</td>
+                    <td>{% if job.expiresAt %}{{ job.expiresAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                    <td>{% if job.createdAt %}{{ job.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                    <td>{% if job.updatedAt %}{{ job.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
 {% endblock %}

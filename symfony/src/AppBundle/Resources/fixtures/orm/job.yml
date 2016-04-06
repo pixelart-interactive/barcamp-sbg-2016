@@ -1,0 +1,16 @@
+AppBundle\Entity\Job:
+    job{1..500}:
+        type: <randomElement(['full-time', 'part-time', 'freelance'])>
+        category: '@category*'
+        company: <de_AT:company()>
+        logo: 50%? <image('web/uploads/logo', 170, 100, 'abstract', false)>
+        url: 80%? <de_AT:url()>
+        position: <catchPhrase()>
+        location: <de_AT:cityName()>
+        description: <realText(300, 3)>
+        howToApply: <sentence()>
+        token (unique): <uuid()>
+        email: <de_AT:email()>
+        createdAt: <dateTimeBetween('-70 days', 'now')>
+        updatedAt: <dateTimeBetween($createdAt, 'now')>
+        expiresAt: <((clone $createdAt)->add(new \DateInterval('P30D')))>

@@ -12,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Category
 {
+    const MAX_JOBS_HOMEPAGE = 10;
+
     /**
      * @var int
      *
@@ -34,6 +36,11 @@ class Category
      * @var Job[]|Collection
      */
     private $jobs;
+
+    /**
+     * @var Job[]|Collection
+     */
+    private $activeJobs;
 
     /**
      * Constructor
@@ -72,6 +79,14 @@ class Category
     }
 
     /**
+     * @param Job[]|Collection $jobs
+     */
+    public function setJobs($jobs)
+    {
+        $this->jobs = $jobs;
+    }
+
+    /**
      * @param Job $job
      *
      * @return Category
@@ -97,5 +112,21 @@ class Category
     public function getJobs()
     {
         return $this->jobs;
+    }
+
+    /**
+     * @return Job[]|Collection
+     */
+    public function getActiveJobs()
+    {
+        return $this->activeJobs;
+    }
+
+    /**
+     * @param Job[]|Collection $activeJobs
+     */
+    public function setActiveJobs($activeJobs)
+    {
+        $this->activeJobs = $activeJobs;
     }
 }
