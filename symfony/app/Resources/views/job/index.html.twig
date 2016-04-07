@@ -1,48 +1,32 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    {% for category in categories %}
-        <h1>{{ category.name }}</h1>
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/jobs.css') }}" type="text/css" media="all" />
+{% endblock %}
 
-        <table>
-            <thead>
-            <tr>
-                <th>Id</th>
-                <th>Type</th>
-                <th>Company</th>
-                <th>Logo</th>
-                <th>Url</th>
-                <th>Position</th>
-                <th>Location</th>
-                <th>Description</th>
-                <th>Howtoapply</th>
-                <th>Token</th>
-                <th>Email</th>
-                <th>Expiresat</th>
-                <th>Createdat</th>
-                <th>Updatedat</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for job in category.activeJobs %}
-                <tr>
-                    <td>{{ job.id }}</td>
-                    <td>{{ job.type }}</td>
-                    <td>{{ job.company }}</td>
-                    <td>{{ job.logo }}</td>
-                    <td>{{ job.url }}</td>
-                    <td>{{ job.position }}</td>
-                    <td>{{ job.location }}</td>
-                    <td>{{ job.description }}</td>
-                    <td>{{ job.howToApply }}</td>
-                    <td>{{ job.token }}</td>
-                    <td>{{ job.email }}</td>
-                    <td>{% if job.expiresAt %}{{ job.expiresAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-                    <td>{% if job.createdAt %}{{ job.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-                    <td>{% if job.updatedAt %}{{ job.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    {% endfor %}
+{% block content %}
+    <div id="jobs">
+        {% for category in categories %}
+            <div>
+                <div class="category">
+                    <h1>{{ category.name }}</h1>
+                </div>
+
+                <table class="jobs">
+                    {% for job in category.activeJobs %}
+                        <tr class="{{ cycle(['even', 'odd'], loop.index) }}">
+                            <td class="location">{{ job.location }}</td>
+                            <td class="position">
+                                <a href="#">
+                                    {{ job.position }}
+                                </a>
+                            </td>
+                            <td class="company">{{ job.company }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}
