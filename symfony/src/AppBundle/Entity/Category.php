@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Category
 {
     const MAX_JOBS_HOMEPAGE = 10;
+    const MAX_JOBS_PAGE = 20;
 
     /**
      * @var int

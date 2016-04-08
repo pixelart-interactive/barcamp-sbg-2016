@@ -10,22 +10,12 @@
         {% for category in categories %}
             <div>
                 <div class="category">
-                    <h1>{{ category.name }}</h1>
+                    <h1>
+                        <a href="{{ path('category_show', {id: category.id}) }}">{{ category.name }}</a>
+                    </h1>
                 </div>
 
-                <table class="jobs">
-                    {% for job in category.activeJobs %}
-                        <tr class="{{ cycle(['even', 'odd'], loop.index) }}">
-                            <td class="location">{{ job.location }}</td>
-                            <td class="position">
-                                <a href="#">
-                                    {{ job.position }}
-                                </a>
-                            </td>
-                            <td class="company">{{ job.company }}</td>
-                        </tr>
-                    {% endfor %}
-                </table>
+                {{ include('job/_jobs.html.twig', {jobs: category.activeJobs}) }}
             </div>
         {% endfor %}
     </div>
