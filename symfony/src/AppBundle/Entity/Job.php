@@ -4,10 +4,13 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @ORM\Table(name="job")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\JobRepository")
+ *
+ * @ORM\HasLifecycleCallbacks()
  */
 class Job
 {
@@ -135,6 +138,26 @@ class Job
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * @return string[]
+     */
+    public static function getTypes()
+    {
+        return [
+            'full-time' => 'Full time',
+            'part-time' => 'Part time',
+            'freelance' => 'Freelance',
+        ];
+    }
+
+    /**
+     * @return string[]
+     */
+    public static function getTypeValues()
+    {
+        return array_keys(self::getTypes());
     }
 
     /**
@@ -360,5 +383,21 @@ class Job
     public function getCategory()
     {
         return $this->category;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setTokenValue()
+    {
+        $this->token = Uuid::uuid4()->toString();
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setExpiresAtValue()
+    {
+        $this->expiresAt = new \DateTime('+30 days');
     }
 }

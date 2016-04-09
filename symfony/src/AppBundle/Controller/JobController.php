@@ -4,10 +4,12 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Category;
 use AppBundle\Entity\Job;
+use AppBundle\Form\JobType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 class JobController extends Controller
 {
@@ -27,6 +29,33 @@ class JobController extends Controller
 
         return $this->render('job/index.html.twig', [
             'categories' => $categories,
+        ]);
+    }
+
+    /**
+     * @Method({"GET", "POST"})
+     * @Route("/job/new", name="job_new")
+     */
+    public function newAction(Request $request)
+    {
+        $job = new Job();
+        $form = $this->createForm(JobType::class, $job);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+
+            $em->persist($job);
+            $em->flush();
+
+            return $this->redirectToRoute('job_show', [
+                'id' => $job->getId(),
+            ]);
+        }
+
+        return $this->render('job/new.html.twig', [
+            'job' => $job,
+            'form' => $form->createView(),
         ]);
     }
 
