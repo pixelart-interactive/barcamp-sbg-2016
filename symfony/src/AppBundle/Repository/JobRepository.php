@@ -29,4 +29,20 @@ class JobRepository extends EntityRepository
 
         return new Paginator($qb, false);
     }
+
+    /**
+     * @param int $id
+     *
+     * @return Job
+     */
+    public function findActiveJob($id)
+    {
+        $qb = $this->createQueryBuilder('job')
+            ->where('job.id = :id')
+            ->andWhere('job.expiresAt > CURRENT_TIMESTAMP()')
+            ->setParameter('id', $id)
+        ;
+
+        return $qb->getQuery()->getSingleResult();
+    }
 }

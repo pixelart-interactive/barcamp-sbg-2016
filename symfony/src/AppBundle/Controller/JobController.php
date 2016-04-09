@@ -3,7 +3,9 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Category;
+use AppBundle\Entity\Job;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -25,6 +27,21 @@ class JobController extends Controller
 
         return $this->render('job/index.html.twig', [
             'categories' => $categories,
+        ]);
+    }
+
+    /**
+     * @Method("GET")
+     * @Route("/job/{id}", name="job_show")
+     * @ParamConverter("job", options={
+     *     "repository_method" = "findActiveJob",
+     *     "map_method_signature" = true
+     * })
+     */
+    public function showAction(Job $job)
+    {
+        return $this->render('job/show.html.twig', [
+            'job' => $job,
         ]);
     }
 }
